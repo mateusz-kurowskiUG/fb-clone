@@ -2,6 +2,7 @@
 
 .env
 
+migrations
 # Logs
 
 logs
