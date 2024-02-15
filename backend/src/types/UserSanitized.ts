@@ -1,4 +1,4 @@
-export interface TUserSanitized {
+export interface IUserSanitized {
   id: string;
   email: string;
   name: string;

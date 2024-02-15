@@ -1,13 +1,12 @@
-import { PrismaClient } from "@prisma/client";
-import type { IUser } from "../types/User.model";
-import { sanitizeUser } from "../utils/utils";
+import type { PrismaClient } from "@prisma/client";
+import type { TUser } from "../types/User.model";
 import type { IUserSanitized } from "../types/UserSanitized";
-const prisma = new PrismaClient();
+import { sanitizeUser } from "../utils/utils";
+import { prisma } from "./prisma";
 
-class Database {
+class UserTable {
   private readonly prisma: PrismaClient;
-
-  constructor(private readonly prismaInstance: PrismaClient) {
+  constructor(prismaInstance: PrismaClient) {
     this.prisma = prismaInstance;
   }
 
@@ -16,7 +15,7 @@ class Database {
     if (users === null || users === undefined) {
       return null;
     }
-    const sanitizedUsers = users.map((user: IUser) => {
+    const sanitizedUsers = users.map((user: TUser) => {
       const { password, ...userWithoutPassword } = user;
       return userWithoutPassword;
     });
@@ -40,7 +39,7 @@ class Database {
     return sanitizedUser;
   }
 
-  public async createUser(user: IUser): Promise<IUser | null> {
+  public async createUser(user: TUser): Promise<IUserSanitized | null> {
     const { email, name, password, lastName } = user;
     const newUser = await this.prisma.user.create({
       data: {
@@ -57,5 +56,4 @@ class Database {
     return sanitized;
   }
 }
-
-export default new Database(prisma);
+export default new UserTable(prisma);

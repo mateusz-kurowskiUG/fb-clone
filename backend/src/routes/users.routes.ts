@@ -1,7 +1,7 @@
 import { Router, type Request, type Response } from "express";
-import db from "../db/Database";
+import UserTable from "../db/UserTable";
 const usersRouter = Router();
-
+const db = UserTable;
 usersRouter.get("/", async (req: Request, res: Response) => {
   try {
     const users = await db.getUsers();
@@ -26,7 +26,6 @@ usersRouter.get("/:id", async (req: Request, res: Response) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-usersRouter.post("/", (req: Request, res: Response) => {});
 usersRouter.put("/:id", (req: Request, res: Response) => {});
 usersRouter.delete("/:id", (req: Request, res: Response) => {});
 
