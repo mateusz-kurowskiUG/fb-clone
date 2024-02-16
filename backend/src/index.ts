@@ -1,6 +1,21 @@
 import express, { Router, json } from "express";
 import usersRouter from "./routes/users.routes";
 import authRouter from "./routes/auth.routes";
+import { prisma } from "./db/prisma";
+
+prisma
+  .$transaction([
+    prisma.comment.deleteMany({}),
+    prisma.post.deleteMany({}),
+    prisma.profile.deleteMany({}),
+    prisma.user.deleteMany({}),
+  ])
+  .then(() => {
+    console.log("Database cleared");
+  })
+  .catch((error) => {
+    console.log(error);
+  });
 
 const app = express();
 app.use(json());

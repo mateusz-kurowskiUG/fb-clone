@@ -10,35 +10,49 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Post {
+model Comment {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  title     String   @db.VarChar(255)
-  content   String?
-  published Boolean  @default(false)
-  author    User     @relation(fields: [authorId], references: [id])
+  content   String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: NoAction)
+  postId    String
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId  String
 }
 
+model Post {
+  id        String    @id @default(uuid())
+  createdAt DateTime  @default(now())
+  content   String?
+  author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId  String
+  Comment   Comment[]
+}
+
 model Profile {
-  id     String  @id @default(uuid())
-  bio    String?
-  user   User    @relation(fields: [userId], references: [id])
-  userId String  @unique
+  userId     String  @id @unique
+  user       User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bio        String? @default("")
+  avatar     String? @default("")
+  background String? @default("")
 }
 
 model User {
-  id          String   @id @default(uuid())
-  email       String   @unique
+  id          String    @id @default(uuid())
+  email       String    @unique
   name        String
   lastName    String
   password    String
-  createdAt   DateTime @default(now())
+  createdAt   DateTime  @default(now())
   dateOfBirth DateTime
-  role        Role     @default(USER)
+  role        Role      @default(USER)
   posts       Post[]
   profile     Profile?
+  Comment     Comment[]
+  // TODO: Add 'country' relation
+  // TODO Add likes relation
+  // TODO Add follow relation
 }
 
 enum Role {

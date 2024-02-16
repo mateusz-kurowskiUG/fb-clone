@@ -1,7 +1,7 @@
 import type { INewUser } from "../interfaces/NewUser.model";
 import type { TUser } from "../types/User.model";
 import type { IUserSanitized } from "../interfaces/UserSanitized";
-
+import { validate as validateUUID } from "uuid";
 export const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 export const passwordRegex =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&\\.])[A-Za-z\d@$!%*?&\\.]{8,}$/;
@@ -17,6 +17,8 @@ export const sanitizeUser = (user: TUser): IUserSanitized => {
   const { password, role, ...sanitizedUser } = user;
   return sanitizedUser;
 };
+
+export const checkUUID = (id: string): boolean => validateUUID(id);
 
 export const validateUser = (user: INewUser): INewUser | false => {
   const { email, lastName, name, password, dateOfBirth } = user;
@@ -45,7 +47,7 @@ export const validateUser = (user: INewUser): INewUser | false => {
     lastName: fixedLastName,
     name: fixedName,
     password: fixedPassword,
-    dateOfBirth
+    dateOfBirth,
   };
   return fixedUser;
 };
