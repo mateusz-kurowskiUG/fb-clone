@@ -36,6 +36,12 @@ model User {
   password    String
   createdAt   DateTime @default(now())
   dateOfBirth DateTime
+  role        Role     @default(USER)
   posts       Post[]
   profile     Profile?
+}
+
+enum Role {
+  USER
+  ADMIN
 }

@@ -1,8 +1,8 @@
 import type { PrismaClient } from "@prisma/client";
-import type { TUser } from "../types/User.model";
 import type { IUserSanitized } from "../interfaces/UserSanitized";
-import { sanitizeUser } from "../utils/usersUtils";
+import { sanitizeUser, sanitizeUsers, validateUser } from "../utils/usersUtils";
 import { prisma } from "./prisma";
+import type { INewUser } from "../interfaces/NewUser.model";
 
 class UserTable {
   private readonly prisma: PrismaClient;
@@ -15,10 +15,7 @@ class UserTable {
     if (users === null || users === undefined) {
       return null;
     }
-    const sanitizedUsers = users.map((user: TUser) => {
-      const { password, ...userWithoutPassword } = user;
-      return userWithoutPassword;
-    });
+    const sanitizedUsers = sanitizeUsers(users);
     return sanitizedUsers;
   }
 
@@ -31,23 +28,22 @@ class UserTable {
         id
       }
     });
-    if (user === null) {
-      return null;
-    }
+    if (user === null) return null;
 
     const sanitizedUser = sanitizeUser(user);
     return sanitizedUser;
   }
 
-  public async createUser(user: TUser): Promise<IUserSanitized | null> {
-    const { email, name, password, lastName } = user;
+  public async createUser(user: INewUser): Promise<IUserSanitized | null> {
+    const validated = validateUser(user);
+    if (validated === false) return null;
+    const exists = await this.prisma.user.findUnique({
+      where: { email: user.email }
+    });
+    if (exists !== null) return null;
+
     const newUser = await this.prisma.user.create({
-      data: {
-        email,
-        name,
-        password,
-        lastName
-      }
+      data: validated
     });
     if (newUser === null) {
       return null;

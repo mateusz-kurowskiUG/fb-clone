@@ -9,13 +9,13 @@ export const nameRegex = /^[\p{L} ,.'-]+$/u;
 
 export const sanitizeUsers = (users: TUser[]): IUserSanitized[] =>
   users.map((user: TUser) => {
-    const { password, ...userWithoutPassword } = user;
-    return userWithoutPassword;
+    const { password, role, ...sanitizedUsers } = user;
+    return sanitizedUsers;
   });
 
 export const sanitizeUser = (user: TUser): IUserSanitized => {
-  const { password, ...userWithoutPassword } = user;
-  return userWithoutPassword;
+  const { password, role, ...sanitizedUser } = user;
+  return sanitizedUser;
 };
 
 export const validateUser = (user: INewUser): INewUser | false => {
