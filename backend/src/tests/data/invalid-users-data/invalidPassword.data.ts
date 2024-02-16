@@ -11,6 +11,7 @@ const invalidPassword: INewUser[] = [
   { ...validUser, password: "abcdefg123" },
   { ...validUser, password: "abc123#" },
   { ...validUser, password: "" },
+  { ...validUser, password: "              " },
   { ...validUser, password: "a".repeat(51) },
   { ...validUser, password: "abc123#" }
 ];

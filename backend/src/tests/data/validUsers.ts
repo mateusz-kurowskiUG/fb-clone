@@ -2,24 +2,24 @@ import type { INewUser } from "../../interfaces/NewUser.model";
 
 export const validUsers: INewUser[] = [
   {
-    email: "admin@admin.com",
+    email: "adm@adm.pl",
     lastName: "Kowalski",
     name: "Andrzej",
     password: "Admin123.",
     dateOfBirth: new Date("2002-01-01")
   },
   {
-    email: "",
-    lastName: "Kowalski",
+    email: "mail@mail.com",
+    lastName: "Naj",
     name: "Andrzej",
-    password: "Admin123.",
-    dateOfBirth: new Date("2003-11-11")
+    password: "Admin123!",
+    dateOfBirth: new Date("1996-10-30")
   },
   {
-    email: "",
-    lastName: "Kowalski",
-    name: "Andrzej",
+    email: "mail@mail.com",
+    lastName: "Naj-Kowalski",
+    name: "Jan",
     password: "Admin123.",
-    dateOfBirth: new Date("2000-12-12")
+    dateOfBirth: new Date("1970-12-12")
   }
 ];

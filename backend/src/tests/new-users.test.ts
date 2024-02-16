@@ -10,11 +10,11 @@ describe.each(invalidUsers)("Invalid user creation test:", (user: INewUser) => {
   });
 });
 
-// describe.each(validUsers)("Validate new user", (user: INewUser) => {
-//   test("New user should be valid", () => {
-//     expect(validateUser(user)).toBeInstanceOf(Object);
-//   });
-// });
+describe.each(validUsers)("Validate new user", (user: INewUser) => {
+  test("New user should be valid", () => {
+    expect(validateUser(user)).toBeInstanceOf(Object);
+  });
+});
 
 // test("New user is valid", () => {});
 // test("New user is not valid", () => {});
