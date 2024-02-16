@@ -16,10 +16,15 @@ export const validUsers: INewUser[] = [
     dateOfBirth: new Date("1996-10-30")
   },
   {
-    email: "mail@mail.com",
+    email: "mail@mail2.com",
     lastName: "Naj-Kowalski",
     name: "Jan",
     password: "Admin123.",
     dateOfBirth: new Date("1970-12-12")
   }
 ];
+
+export const validUsersJSON: INewUser[] = validUsers.map((user) =>
+  JSON.parse(JSON.stringify(user))
+);
+console.log(validUsersJSON);

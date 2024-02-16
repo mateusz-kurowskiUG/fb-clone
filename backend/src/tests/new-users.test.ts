@@ -1,8 +1,8 @@
-import { expect, test, describe } from "@jest/globals";
-import { validUsers } from "./data/validUsers";
-import { invalidUsers } from "./data/invalidUsers";
 import { validateUser } from "../utils/usersUtils";
 import { type INewUser } from "../interfaces/NewUser.model";
+import { invalidUsers } from "../data/invalidUsers";
+import { describe, test, expect } from "@jest/globals";
+import { validUsers } from "../data/validUsers";
 
 describe.each(invalidUsers)("Invalid user creation test:", (user: INewUser) => {
   test(`New user should not be valid`, () => {

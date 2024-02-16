@@ -26,7 +26,7 @@ usersRouter.get("/:id", async (req: Request, res: Response) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-usersRouter.put("/:id", (req: Request, res: Response) => {});
 usersRouter.delete("/:id", (req: Request, res: Response) => {});
+usersRouter.put("/:id", (req: Request, res: Response) => {});
 
 export default usersRouter;
