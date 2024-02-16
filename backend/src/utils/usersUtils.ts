@@ -5,8 +5,7 @@ import type { IUserSanitized } from "../interfaces/UserSanitized";
 export const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 export const passwordRegex =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&\\.])[A-Za-z\d@$!%*?&\\.]{8,}$/;
-// export const nameRegex = /^[\p{L} ,.'-]+$/u;
-export const nameRegex = /^1234$/;
+export const nameRegex = /^[\p{L} ,.'-]+$/u;
 
 export const sanitizeUsers = (users: TUser[]): IUserSanitized[] =>
   users.map((user: TUser) => {
@@ -25,7 +24,7 @@ export const validateUser = (user: INewUser): INewUser | false => {
   const fixedEmail = email.trim().toLowerCase();
   const fixedName = name.trim().toLowerCase();
   const fixedLastName = lastName.trim().toLowerCase();
-  const fixedPassword = password.trim().toLowerCase();
+  const fixedPassword = password.trim();
   // check if values are valid
   const isEmailValid = validateEmail(fixedEmail);
   const isNameValid = validateName(fixedName);
