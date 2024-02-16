@@ -3,4 +3,5 @@ export interface INewUser {
   lastName: string;
   name: string;
   password: string;
+  dateOfBirth: Date;
 }

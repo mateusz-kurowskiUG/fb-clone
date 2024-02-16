@@ -1,7 +1,7 @@
 import type { PrismaClient } from "@prisma/client";
 import type { TUser } from "../types/User.model";
-import type { IUserSanitized } from "../types/UserSanitized";
-import { sanitizeUser } from "../utils/utils";
+import type { IUserSanitized } from "../interfaces/UserSanitized";
+import { sanitizeUser } from "../utils/usersUtils";
 import { prisma } from "./prisma";
 
 class UserTable {

@@ -1,8 +1,3 @@
-export type TUser = {
-  id: string;
-  email: string;
-  name: string;
-  password: string;
-  createdAt: Date;
-  lastName: string;
-} & { password: string };
+import type { IUserSanitized } from "../interfaces/UserSanitized";
+
+export type TUser = IUserSanitized & { password: string };
