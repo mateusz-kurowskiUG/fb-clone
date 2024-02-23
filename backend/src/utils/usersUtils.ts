@@ -68,10 +68,17 @@ const validateDateOfBirth = (dateOfBirth: Date): boolean => {
 
 export const createUser = async (
   user: INewUser
-): Promise<AxiosResponse<IRegisterResponse>> => {
+): Promise<AxiosResponse<IRegisterResponse, any>> => {
   const url = "http://localhost:3000/api";
-  const response = await axios.post(`${url}/auth/register`, user);
-  return response;
+  try {
+    const response = await axios.post<IRegisterResponse>(
+      `${url}/auth/register`,
+      user
+    );
+    return response;
+  } catch (e: any) {
+    return e.response;
+  }
 };
 
 export const deleteUser = async (

@@ -4,20 +4,14 @@ import { invalidUsers } from "../data/invalidUsers";
 import { describe, test, expect } from "@jest/globals";
 import { validUsers } from "../data/validUsers";
 
-describe.each(invalidUsers)("Invalid user creation test:", (user: INewUser) => {
+describe.each(invalidUsers)("Validate invalid new user", (user: INewUser) => {
   test(`New user should not be valid`, () => {
     expect(validateUser(user)).toBeFalsy();
   });
 });
 
-describe.each(validUsers)("Validate new user", (user: INewUser) => {
+describe.each(validUsers)("Validate valid new user", (user: INewUser) => {
   test("New user should be valid", () => {
     expect(validateUser(user)).toBeInstanceOf(Object);
   });
 });
-
-// test("New user is valid", () => {});
-// test("New user is not valid", () => {});
-
-// test("User is sanitized", () => {});
-// test("User is not sanitized", () => {});
