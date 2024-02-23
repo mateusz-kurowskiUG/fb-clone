@@ -4,9 +4,7 @@ import usersRouter from "./routes/users.routes";
 import authRouter from "./routes/auth.routes";
 import { prisma } from "./db/prisma";
 import swaggerUi from "swagger-ui-express";
-// import swaggerDocument from "./swagger.json";
-import swaggerJsDoc from "swagger-jsdoc";
-import { options } from "./swaggerOptions";
+import swaggerSpecs from "./swaggerOptions";
 
 prisma
   .$transaction([
@@ -23,15 +21,15 @@ prisma
   });
 
 const app = express();
-app.use(cors());
-app.use(json());
 const port = 3000;
 const router = Router();
-const specs = swaggerJsDoc(options);
-router.use("/docs", swaggerUi.serve);
-router.get("/docs", swaggerUi.setup(specs, { explorer: true }));
+
+app.use(cors());
+app.use(json());
+
 router.use("/users", usersRouter);
 router.use("/auth", authRouter);
+router.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 app.use("/api", router);
 try {
   app.listen(port, () => {

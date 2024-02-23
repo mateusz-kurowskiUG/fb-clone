@@ -5,25 +5,107 @@ import {
   RegisterMessage,
   type IRegisterResponse
 } from "../interfaces/ApiResponses.model";
+import type INewUserBody from "../interfaces/newUserBody";
 const db = UserTable;
 const authRouter = Router();
- /** 
-  * @openapi
-  * /register:
-  * summary: Register a new user
-  * description: Register a new user
-  *   post:
-  *     description: User register
-  *     responses:
-  *       200:
-  *       description: Returns sanitized new user
-  *       400:
-  *       description: Returns error
-  */
+
+/**
+ * @swagger
+ *  components:
+ *    schemas:
+ *      UserSanitized:
+ *        type: object
+ *        properties:
+ *          id:
+ *            type: string
+ *            description: The user's UUID
+ *          email:
+ *            type: string
+ *            description: The user's email
+ *          name:
+ *            type: string
+ *            description: The user's name
+ *          lastName:
+ *            type: string
+ *            description: The user's last name
+ *          createdAt:
+ *            type: string
+ *            format: date-time
+ *            description: The date the user was created
+ *      RegisterMessage:
+ *       type: string
+ *       enum:
+ *          - User created successfully
+ *          - Invalid user data
+ *          - Internal server error
+ *      NewUserBody:
+ *        type: object
+ *        properties:
+ *          email:
+ *            type: string
+ *            description: The user's email
+ *          name:
+ *            type: string
+ *            description: The user's name
+ *          lastName:
+ *            type: string
+ *            description: The user's last name
+ *          password:
+ *            type: string
+ *            description: The user's password
+ *          dateOfBirth:
+ *            type: string
+ *            format: date-time
+ *            description: The user's date of birth
+ *        required:
+ *          - email
+ *            - name
+ *               - lastName
+ *                - password
+ *                - dateOfBirth
+ */
+
+/**
+ * @swagger
+ * tags:
+ * name: Auth
+ * description: The authentication API
+ */
+
+/**
+ * @swagger
+ * /auth/register:
+ *  post:
+ *    summary: Register a new user
+ *    tags: [Auth]
+ *    description: Register a new user
+ *    requestBody:
+ *      required: true
+ *      content:
+ *       application/json:
+ *          schema:
+ *              $ref: '#/components/schemas/UserSanitized'
+ *    responses:
+ *      201:
+ *        description: User created
+ *        content:
+ *          application/json:
+ *            schema:
+ *              properties:
+ *                data:
+ *                  $ref: '#/components/schemas/UserSanitized'
+ *                message:
+ *                  $ref: '#/components/schemas/RegisterMessage'
+ *                result:
+ *                  type: boolean
+ *      400:
+ *        description: Invalid user data
+ */
 authRouter.post("/register", async (req: Request, res: Response) => {
   if (req.body === undefined)
     return res.status(400).json({ error: "Invalid user data" });
-  const { email, name, password, lastName, dateOfBirth } = req.body;
+  const { email, name, password, lastName, dateOfBirth }: INewUserBody =
+    req.body;
   const dateParsed = Date.parse(dateOfBirth);
   const dateObject = new Date(dateParsed);
   const validated = validateUser({
@@ -34,11 +116,13 @@ authRouter.post("/register", async (req: Request, res: Response) => {
     dateOfBirth: dateObject
   });
   if (validated === false)
-    return res.status(400).json({ error: "Invalid user data" });
+    return res.status(400).json({ error: "Invalid user data", result: false });
 
   const newUser = await db.createUser(validated);
   if (newUser === null)
-    return res.status(400).json({ error: "Internal server error" });
+    return res
+      .status(400)
+      .json({ error: "Internal server error", result: false });
   const response: IRegisterResponse = {
     data: newUser,
     message: RegisterMessage.SUCCESS,

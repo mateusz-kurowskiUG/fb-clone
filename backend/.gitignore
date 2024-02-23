@@ -3,6 +3,7 @@
 .env
 
 migrations/*
+!migrations/migration_lock.toml
 # Logs
 
 logs

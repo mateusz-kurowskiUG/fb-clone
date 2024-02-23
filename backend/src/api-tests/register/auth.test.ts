@@ -12,13 +12,12 @@ import { invalidUsers } from "../../data/invalidUsers";
 describe.each(validUsers)("Valid User registration test", async (user) => {
   const confirmedUser = user as INewUser;
   const response = await createUser(confirmedUser);
-  const { status } = response;
-  const { data } = response.data;
+  const { data, status } = response;
   if (data === undefined) throw new Error("User not created");
 
   validRegisterTest(data, response.status);
   afterEach(async () => {
-    if (status === 201 && data !== undefined) await deleteUser(data);
+    if (status === 201 && data.data !== undefined) await deleteUser(data.data);
   });
 });
 

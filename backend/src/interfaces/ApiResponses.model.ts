@@ -3,6 +3,7 @@ import type { IUserSanitized } from "./UserSanitized";
 export interface IRegisterResponse {
   data?: IUserSanitized;
   message: RegisterMessage;
+  error?: string;
   result: boolean;
 }
 
