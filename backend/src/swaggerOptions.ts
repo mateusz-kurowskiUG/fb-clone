@@ -1,25 +1,10 @@
 export const options = {
-  definition: {
-    openapi: "3.1.0",
-    info: {
-      title: "proj1",
-      version: "0.1.0",
-      description:
-        "This is a simple CRUD API application made with Express and documented with Swagger",
-      license: {
-        name: "MIT",
-        url: "https://spdx.org/licenses/MIT.html"
+    definition: {
+      openapi: '3.0.0',
+      info: {
+        title: 'Hello World',
+        version: '1.0.0',
       },
-      contact: {
-        name: "MKurowski",
-        url: "https://mkurowski.com",
-      }
     },
-    servers: [
-      {
-        url: "http://localhost:3000"
-      }
-    ]
-  },
-  apis: ["./routes/*.ts"]
-};
+    apis: ['./src/routes*.ts'], // files containing annotations as above
+  };

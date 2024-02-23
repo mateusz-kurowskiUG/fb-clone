@@ -9,8 +9,10 @@ const db = UserTable;
 const authRouter = Router();
  /** 
   * @openapi
-  * /:
-  *   get:
+  * /register:
+  * summary: Register a new user
+  * description: Register a new user
+  *   post:
   *     description: User register
   *     responses:
   *       200:
