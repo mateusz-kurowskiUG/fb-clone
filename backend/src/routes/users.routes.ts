@@ -16,8 +16,7 @@ usersRouter.get("/", async (req: Request, res: Response) => {
 usersRouter.get("/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
 
-  if (checkUUID(id) === false)
-    return res.status(400).json({ error: "Invalid user ID" });
+  if (!checkUUID(id)) return res.status(400).json({ error: "Invalid user ID" });
 
   try {
     const user = await db.getUserById(id);
@@ -26,14 +25,13 @@ usersRouter.get("/:id", async (req: Request, res: Response) => {
     res.status(200).json(user);
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });
-    return;
   }
 });
 usersRouter.delete("/:userId", async (req: Request, res: Response) => {
   const { userId } = req.params;
   console.log(userId);
 
-  if (checkUUID(userId) === false)
+  if (!checkUUID(userId))
     return res.status(400).send({ error: "Invalid user ID" });
 
   const deleteRes = await db.deleteUser(userId);

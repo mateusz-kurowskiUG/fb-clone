@@ -1,6 +1,10 @@
 import { Router, type Response, type Request } from "express";
 import UserTable from "../db/UserTable";
 import { validateUser } from "../utils/usersUtils";
+import {
+  RegisterMessage,
+  type IRegisterResponse
+} from "../interfaces/ApiResponses.model";
 const db = UserTable;
 const authRouter = Router();
 
@@ -23,8 +27,12 @@ authRouter.post("/register", async (req: Request, res: Response) => {
   const newUser = await db.createUser(validated);
   if (newUser === null)
     return res.status(400).json({ error: "Internal server error" });
-
-  return res.status(201).json(newUser);
+  const response: IRegisterResponse = {
+    data: newUser,
+    message: RegisterMessage.SUCCESS,
+    result: true
+  };
+  return res.status(201).json(response);
 });
 authRouter.post("/login", (req, res) => {});
 

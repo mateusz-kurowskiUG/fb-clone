@@ -2,6 +2,8 @@ import type { INewUser } from "../interfaces/NewUser.model";
 import type { TUser } from "../types/User.model";
 import type { IUserSanitized } from "../interfaces/UserSanitized";
 import { validate as validateUUID } from "uuid";
+import axios, { type AxiosResponse } from "axios";
+import type { IRegisterResponse } from "../interfaces/ApiResponses.model";
 export const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 export const passwordRegex =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&\\.])[A-Za-z\d@$!%*?&\\.]{8,}$/;
@@ -47,7 +49,7 @@ export const validateUser = (user: INewUser): INewUser | false => {
     lastName: fixedLastName,
     name: fixedName,
     password: fixedPassword,
-    dateOfBirth,
+    dateOfBirth
   };
   return fixedUser;
 };
@@ -62,4 +64,20 @@ const validateDateOfBirth = (dateOfBirth: Date): boolean => {
   const thirteenYears = 13 * 365 * 24 * 60 * 60 * 1000;
   const isOverThirteenYearsOld = now - dateOfBirth.getTime() >= thirteenYears;
   return isOverThirteenYearsOld;
+};
+
+export const createUser = async (
+  user: INewUser
+): Promise<AxiosResponse<IRegisterResponse>> => {
+  const url = "http://localhost:3000/api";
+  const response = await axios.post(`${url}/auth/register`, user);
+  return response;
+};
+
+export const deleteUser = async (
+  user: IUserSanitized
+): Promise<AxiosResponse<any, any>> => {
+  const url = "http://localhost:3000/api";
+  const response = await axios.delete(`${url}/users/${user.id}`);
+  return response;
 };
