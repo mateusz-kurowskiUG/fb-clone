@@ -7,7 +7,17 @@ import {
 } from "../interfaces/ApiResponses.model";
 const db = UserTable;
 const authRouter = Router();
-
+ /** 
+  * @openapi
+  * /:
+  *   get:
+  *     description: User register
+  *     responses:
+  *       200:
+  *       description: Returns sanitized new user
+  *       400:
+  *       description: Returns error
+  */
 authRouter.post("/register", async (req: Request, res: Response) => {
   if (req.body === undefined)
     return res.status(400).json({ error: "Invalid user data" });

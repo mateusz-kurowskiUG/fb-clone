@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "prep": "bunx prisma generate && bunx prisma migrate dev",
+    "prep_win": "npx prisma generate && npx prisma migrate dev",
     "start": "tsx watch src/index.ts",
     "lint": "eslint \"**/*.{ts,tsx}\"",
     "test_api": "bun test src/api-tests",
@@ -12,6 +13,7 @@
   "devDependencies": {
     "@jest/globals": "^29.7.0",
     "@types/bun": "latest",
+    "@types/swagger-ui-express": "^4.1.6",
     "@types/uuid": "^9.0.8",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "axios": "^1.6.7",
@@ -24,6 +26,7 @@
     "jest": "^29.7.0",
     "prettier": "^3.2.5",
     "prettier-eslint": "^16.3.0",
+    "swagger-ui-express": "^5.0.0",
     "ts-jest": "^29.1.2",
     "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
@@ -40,6 +43,7 @@
     "body-parser": "^1.20.2",
     "cors": "^2.8.5",
     "express": "^4.18.2",
+    "swagger-jsdoc": "^6.2.8",
     "tsx": "^4.7.1",
     "uuid": "^9.0.1"
   }
