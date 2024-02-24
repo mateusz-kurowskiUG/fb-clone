@@ -4,4 +4,6 @@ export interface INewUser {
   name: string;
   password: string;
   dateOfBirth: Date;
+  countryId: string;
+  phoneNumber: string;
 }

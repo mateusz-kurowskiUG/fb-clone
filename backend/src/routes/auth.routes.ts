@@ -5,7 +5,7 @@ import {
   RegisterMessage,
   type IRegisterResponse
 } from "../interfaces/ApiResponses.model";
-import type INewUserBody from "../interfaces/newUserBody";
+import type { INewUser } from "../interfaces/NewUser.model";
 const db = UserTable;
 const authRouter = Router();
 
@@ -104,16 +104,28 @@ const authRouter = Router();
 authRouter.post("/register", async (req: Request, res: Response) => {
   if (req.body === undefined)
     return res.status(400).json({ error: "Invalid user data" });
-  const { email, name, password, lastName, dateOfBirth }: INewUserBody =
-    req.body;
+  const {
+    email,
+    name,
+    password,
+    lastName,
+    dateOfBirth,
+    countryId,
+    phoneNumber
+  } = req.body;
+  if (typeof dateOfBirth !== "string")
+    return res.status(400).json({ error: "Invalid user data" });
   const dateParsed = Date.parse(dateOfBirth);
+
   const dateObject = new Date(dateParsed);
   const validated = validateUser({
     email,
     name,
     password,
     lastName,
-    dateOfBirth: dateObject
+    dateOfBirth: dateObject,
+    countryId,
+    phoneNumber
   });
   if (validated === false)
     return res.status(400).json({ error: "Invalid user data", result: false });

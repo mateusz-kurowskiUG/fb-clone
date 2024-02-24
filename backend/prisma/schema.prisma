@@ -28,6 +28,7 @@ model Post {
   author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId  String
   Comment   Comment[]
+  Like      Like[]
 }
 
 model Profile {
@@ -38,6 +39,24 @@ model Profile {
   background String? @default("")
 }
 
+model Like {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  post      Post     @relation(fields: [postId], references: [id], onDelete: NoAction)
+  postId    String
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId  String
+}
+
+model Country {
+  id         String @id @default(uuid())
+  name       String
+  code       String
+  flag       String
+  phone_code String
+  users      User[]
+}
+
 model User {
   id          String    @id @default(uuid())
   email       String    @unique
@@ -46,13 +65,14 @@ model User {
   password    String
   createdAt   DateTime  @default(now())
   dateOfBirth DateTime
+  countryId   String
+  phone       String?
   role        Role      @default(USER)
   posts       Post[]
   profile     Profile?
   Comment     Comment[]
-  // TODO: Add 'country' relation
-  // TODO Add likes relation
-  // TODO Add follow relation
+  Country     Country   @relation(fields: [countryId], references: [id], onDelete: NoAction)
+  Like        Like[]
 }
 
 enum Role {
