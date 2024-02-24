@@ -20,16 +20,19 @@ const getCountryData = (country: ICountryData): ICountry => {
   const { name, flag, flags, translations, idd } = country;
   const { root, suffixes } = idd;
   const { pol } = translations;
-
+  const suffixesUndefined = suffixes === undefined || suffixes.length === 0;
+  const rootUndefined = root === undefined;
   const countryObject: ICountry = {
     name_eng: name.common,
     name_pol: pol.common,
     flag_emoji: flag,
     flag_svg: flags.svg,
     phone_code:
-      suffixes === undefined || suffixes.length === 0
-        ? root
-        : `${root}${suffixes[0]}`
+      suffixesUndefined && rootUndefined
+        ? ""
+        : suffixesUndefined
+          ? root
+          : `${root}${suffixes[0]}`
   };
   return countryObject;
 };

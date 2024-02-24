@@ -5,6 +5,8 @@ import authRouter from "./routes/auth.routes";
 import { prisma } from "./db/prisma";
 import swaggerUi from "swagger-ui-express";
 import swaggerSpecs from "./swaggerOptions";
+import CountryTable from "./db/tables/CountryTable";
+import countriesRouter from "./routes/countries.routes";
 
 prisma
   .$transaction([
@@ -15,6 +17,13 @@ prisma
   ])
   .then(() => {
     console.log("Database cleared");
+    CountryTable.loadCountries()
+      .then((_) => {
+        console.log("Countries loaded");
+      })
+      .catch((error) => {
+        console.log("failed to load countries: ", error);
+      });
   })
   .catch((error) => {
     console.log(error);
@@ -30,6 +39,7 @@ app.use(json());
 router.use("/users", usersRouter);
 router.use("/auth", authRouter);
 router.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
+router.use("/countries", countriesRouter);
 app.use("/api", router);
 try {
   app.listen(port, () => {

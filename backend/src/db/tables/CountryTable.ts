@@ -12,11 +12,9 @@ class CountryTable {
   // load countries from external API
   public async loadCountries(): Promise<boolean> {
     const countries = await fetchCountries();
-    const result = await (
-      await prisma.country.createMany({ data: countries })
-    ).count;
-    if (result > 0) return true;
-    return false;
+    const result = await prisma.country.createMany({ data: countries });
+    if (result === null) return false;
+    return true;
   }
 
   public async getCountries(): Promise<ICountry[] | null> {

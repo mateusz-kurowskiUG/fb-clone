@@ -67,7 +67,7 @@ model User {
   createdAt   DateTime  @default(now())
   dateOfBirth DateTime
   countryId   String
-  phone       String?   @unique
+  phone       String    @unique
   role        Role      @default(USER)
   posts       Post[]
   profile     Profile?

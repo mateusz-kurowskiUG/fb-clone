@@ -1,9 +1,8 @@
 # Based on https://raw.githubusercontent.com/github/gitignore/main/Node.gitignore
 # Ignore .env file
 .env
-
 # Exclude all files within migrations directory
-migrations/*
+prisma/migrations/*
 
 # But include migration_lock.toml
 !migrations/migration_lock.toml
