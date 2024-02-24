@@ -1,9 +1,16 @@
 # Based on https://raw.githubusercontent.com/github/gitignore/main/Node.gitignore
-
+# Ignore .env file
 .env
 
+# Exclude all files within migrations directory
 migrations/*
+
+# But include migration_lock.toml
 !migrations/migration_lock.toml
+
+# Exclude all files ending with underscore (_) within migrations directory
+migrations/*_
+
 # Logs
 
 logs
