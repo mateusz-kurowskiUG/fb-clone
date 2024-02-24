@@ -6,7 +6,10 @@ import axios, { type AxiosResponse } from "axios";
 import type { IRegisterResponse } from "../interfaces/ApiResponses.model";
 export const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 export const passwordRegex =
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&\\.])[A-Za-z\d@$!%*?&\\.]{8,}$/;
+  /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-.]).{8,}$/;
+
+const phoneNumberRegex = /^\+\d{1,3}\s?[\d\s()-]{5,}$/;
+
 export const nameRegex = /^[\p{L} ,.'-]+$/u;
 
 export const sanitizeUsers = (users: TUser[]): IUserSanitized[] =>
@@ -23,24 +26,49 @@ export const sanitizeUser = (user: TUser): IUserSanitized => {
 export const checkUUID = (id: string): boolean => validateUUID(id);
 
 export const validateUser = (user: INewUser): INewUser | false => {
-  const { email, lastName, name, password, dateOfBirth } = user;
+  const {
+    email,
+    lastName,
+    name,
+    password,
+    dateOfBirth,
+    countryId,
+    phoneNumber
+  } = user;
   // declare fixed values
   const fixedEmail = email.trim().toLowerCase();
   const fixedName = name.trim().toLowerCase();
   const fixedLastName = lastName.trim().toLowerCase();
   const fixedPassword = password.trim();
+  const fixedCountryId = countryId.trim();
+  const fixedPhoneNumber = fixPhoneNumber(phoneNumber);
   // check if values are valid
   const isEmailValid = validateEmail(fixedEmail);
   const isNameValid = validateName(fixedName);
   const isLastNameValid = validateName(fixedLastName);
   const isPasswordValid = validatePassword(fixedPassword);
   const isDateOfBirthValid = validateDateOfBirth(dateOfBirth);
+  const isCountryIdValid = checkUUID(fixedCountryId);
+  const isPhoneNumberValid = validatePhoneNumber(fixedPhoneNumber);
+  console.log(
+    isEmailValid,
+    isNameValid,
+    isLastNameValid,
+    isPasswordValid,
+    isDateOfBirthValid,
+    isCountryIdValid,
+    isPhoneNumberValid,
+    fixedPhoneNumber
+  );
+
   if (
     !isEmailValid ||
     !isNameValid ||
     !isLastNameValid ||
     !isPasswordValid ||
-    !isDateOfBirthValid
+    !isDateOfBirthValid ||
+    !isCountryIdValid ||
+    !isPhoneNumberValid
   ) {
     return false;
   }
@@ -49,11 +77,15 @@ export const validateUser = (user: INewUser): INewUser | false => {
     lastName: fixedLastName,
     name: fixedName,
     password: fixedPassword,
-    dateOfBirth
+    dateOfBirth,
+    countryId: fixedCountryId,
+    phoneNumber: fixedPhoneNumber
   };
   return fixedUser;
 };
 
+const fixPhoneNumber = (phoneNumber: string): string =>
+  phoneNumber.replaceAll(" ", "").trim();
 const validateEmail = (email: string): boolean => emailRegex.test(email);
 const validateName = (name: string): boolean =>
   name.length > 1 && name.length < 50 && nameRegex.test(name);
@@ -65,6 +97,8 @@ const validateDateOfBirth = (dateOfBirth: Date): boolean => {
   const isOverThirteenYearsOld = now - dateOfBirth.getTime() >= thirteenYears;
   return isOverThirteenYearsOld;
 };
+const validatePhoneNumber = (phoneNumber: string): boolean =>
+  phoneNumberRegex.test(phoneNumber);
 
 export const createUser = async (
   user: INewUser

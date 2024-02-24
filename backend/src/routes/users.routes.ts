@@ -1,5 +1,5 @@
 import { Router, type Request, type Response } from "express";
-import UserTable from "../db/UserTable";
+import UserTable from "../db/tables/UserTable";
 import { checkUUID } from "../utils/usersUtils";
 
 const usersRouter = Router();

@@ -3,5 +3,5 @@ export interface ICountry {
   name_pol: string;
   flag_emoji: string;
   flag_svg: string;
-  phone_codes: string;
+  phone_code: string;
 }

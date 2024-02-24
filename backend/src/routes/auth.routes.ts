@@ -1,5 +1,5 @@
 import { Router, type Response, type Request } from "express";
-import UserTable from "../db/UserTable";
+import UserTable from "../db/tables/UserTable";
 import { validateUser } from "../utils/usersUtils";
 import {
   RegisterMessage,

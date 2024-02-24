@@ -50,9 +50,10 @@ model Like {
 
 model Country {
   id         String @id @default(uuid())
-  name       String
-  code       String
-  flag       String
+  name_eng   String
+  name_pol   String
+  flag_emoji String
+  flag_svg   String
   phone_code String
   users      User[]
 }
@@ -66,7 +67,7 @@ model User {
   createdAt   DateTime  @default(now())
   dateOfBirth DateTime
   countryId   String
-  phone       String?
+  phone       String?   @unique
   role        Role      @default(USER)
   posts       Post[]
   profile     Profile?

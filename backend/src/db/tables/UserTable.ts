@@ -1,8 +1,12 @@
 import type { PrismaClient } from "@prisma/client";
-import type { IUserSanitized } from "../interfaces/UserSanitized";
-import { sanitizeUser, sanitizeUsers, validateUser } from "../utils/usersUtils";
-import { prisma } from "./prisma";
-import type { INewUser } from "../interfaces/NewUser.model";
+import type { IUserSanitized } from "../../interfaces/UserSanitized";
+import {
+  sanitizeUser,
+  sanitizeUsers,
+  validateUser
+} from "../../utils/usersUtils";
+import { prisma } from "../prisma";
+import type { INewUser } from "../../interfaces/NewUser.model";
 
 class UserTable {
   private readonly prisma: PrismaClient;
@@ -25,8 +29,8 @@ class UserTable {
     }
     const user = await this.prisma.user.findUnique({
       where: {
-        id,
-      },
+        id
+      }
     });
     if (user === null) return null;
 
@@ -38,12 +42,12 @@ class UserTable {
     const validated = validateUser(user);
     if (validated === false) return null;
     const exists = await this.prisma.user.findUnique({
-      where: { email: user.email },
+      where: { email: user.email }
     });
     if (exists !== null) return null;
 
     const newUser = await this.prisma.user.create({
-      data: { ...validated, profile: { create: {} } },
+      data: { ...validated, profile: { create: {} } }
     });
     if (newUser === null) {
       return null;
@@ -51,14 +55,15 @@ class UserTable {
     const sanitized = sanitizeUser(newUser);
     return sanitized;
   }
+
   public async deleteUser(id: string): Promise<boolean> {
     if (id === "" || id === undefined || id === null) {
       return false;
     }
     const deleteUser = await this.prisma.user.delete({
       where: {
-        id,
-      },
+        id
+      }
     });
     console.log("user", deleteUser);
     return true;

@@ -4,4 +4,6 @@ export interface IUserSanitized {
   name: string;
   lastName: string;
   createdAt: Date;
+  countryId: string;
+  phoneNumber: string;
 }

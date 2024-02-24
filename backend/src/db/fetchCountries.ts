@@ -9,7 +9,7 @@ interface ICountryData {
   idd: { root: string; suffixes: string[] };
 }
 
-const fetchCountries = async (): Promise<ICountry[]> => {
+export const fetchCountries = async (): Promise<ICountry[]> => {
   const response = await axios.get<ICountryData[]>(
     "https://restcountries.com/v3.1/all"
   );
@@ -26,14 +26,10 @@ const getCountryData = (country: ICountryData): ICountry => {
     name_pol: pol.common,
     flag_emoji: flag,
     flag_svg: flags.svg,
-    phone_codes:
+    phone_code:
       suffixes === undefined || suffixes.length === 0
         ? root
         : `${root}${suffixes[0]}`
   };
   return countryObject;
 };
-
-fetchCountries().then((data) => {
-  console.log(data);
-});

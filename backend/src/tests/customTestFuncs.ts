@@ -15,6 +15,8 @@ export const validRegisterTest = (
     expect(response?.data).toHaveProperty("email");
     expect(response?.data).toHaveProperty("lastName");
     expect(response?.data).toHaveProperty("dateOfBirth");
+    expect(response?.data).toHaveProperty("countryId");
+    expect(response?.data).toHaveProperty("phoneNumber");
   });
 };
 
