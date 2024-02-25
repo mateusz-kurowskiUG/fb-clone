@@ -12,71 +12,71 @@ datasource db {
 
 model Comment {
   id        String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  content   String
-  post      Post     @relation(fields: [postId], references: [id], onDelete: NoAction)
-  postId    String
-  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId  String
+  content   String
+  createdAt DateTime @default(now())
+  postId    String
+  updatedAt DateTime @updatedAt
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  post      Post     @relation(fields: [postId], references: [id], onDelete: NoAction)
 }
 
 model Post {
   id        String    @id @default(uuid())
-  createdAt DateTime  @default(now())
-  content   String?
-  author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId  String
+  content   String?
+  createdAt DateTime  @default(now())
   Comment   Comment[]
   Like      Like[]
+  author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
 }
 
 model Profile {
   userId     String  @id @unique
-  user       User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  bio        String? @default("")
   avatar     String? @default("")
   background String? @default("")
+  bio        String? @default("")
+  user       User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Like {
   id        String   @id @default(uuid())
+  authorId  String
   createdAt DateTime @default(now())
-  post      Post     @relation(fields: [postId], references: [id], onDelete: NoAction)
   postId    String
   author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
-  authorId  String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: NoAction)
 }
 
 model Country {
   id         String @id @default(uuid())
-  name_eng   String
-  name_pol   String
   flag_emoji String
   flag_svg   String
+  name_eng   String
+  name_pol   String
   phone_code String
   users      User[]
 }
 
 model User {
   id          String    @id @default(uuid())
-  email       String    @unique
-  name        String
-  lastName    String
-  password    String
+  countryId   String
   createdAt   DateTime  @default(now())
   dateOfBirth DateTime
-  countryId   String
-  phone       String    @unique
-  role        Role      @default(USER)
-  posts       Post[]
-  profile     Profile?
+  email       String    @unique
+  lastName    String
+  name        String
+  password    String
+  phoneNumber String    @unique
   Comment     Comment[]
   Country     Country   @relation(fields: [countryId], references: [id], onDelete: NoAction)
   Like        Like[]
+  posts       Post[]
+  profile     Profile?
+  role        Role      @default(USER)
 }
 
 enum Role {
-  USER
   ADMIN
+  USER
 }

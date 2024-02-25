@@ -13,7 +13,8 @@ prisma
     prisma.comment.deleteMany({}),
     prisma.post.deleteMany({}),
     prisma.profile.deleteMany({}),
-    prisma.user.deleteMany({})
+    prisma.user.deleteMany({}),
+    prisma.country.deleteMany({})
   ])
   .then(() => {
     console.log("Database cleared");
@@ -36,10 +37,10 @@ const router = Router();
 app.use(cors());
 app.use(json());
 
-router.use("/users", usersRouter);
 router.use("/auth", authRouter);
-router.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 router.use("/countries", countriesRouter);
+router.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
+router.use("/users", usersRouter);
 app.use("/api", router);
 try {
   app.listen(port, () => {

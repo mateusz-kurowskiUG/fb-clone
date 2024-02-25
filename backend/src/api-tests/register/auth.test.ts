@@ -6,12 +6,10 @@ import {
   validRegisterTest
 } from "../../tests/customTestFuncs";
 import { createUser, deleteUser } from "../../utils/usersUtils";
-import type { INewUser } from "../../interfaces/NewUser.model";
 import { invalidUsers } from "../../data/invalidUsers";
 
 describe.each(validUsers)("Valid User registration test", async (user) => {
-  const confirmedUser = user as INewUser;
-  const response = await createUser(confirmedUser);
+  const response = await createUser(user);
   const { data, status } = response;
   if (data === undefined) throw new Error("User not created");
 
@@ -22,8 +20,7 @@ describe.each(validUsers)("Valid User registration test", async (user) => {
 });
 
 describe.each(invalidUsers)("Invalid User registration test", async (user) => {
-  const confirmedUser = user as INewUser;
-  const response = await createUser(confirmedUser);
+  const response = await createUser(user);
   const { data, status } = response;
   invalidRegisterTest(data, status);
 });

@@ -6,7 +6,10 @@ export const validRegisterTest = (
   status: number
 ): void => {
   test("New user should have been created", () => {
+    console.log(response);
+  
     expect(status).toBe(201);
+    expect(response?.result).toBe(true);
     expect(response).toHaveProperty("data");
     expect(response).toHaveProperty("message");
     expect(response).toHaveProperty("result");
@@ -25,5 +28,6 @@ export const invalidRegisterTest = (data: any, status: number): void => {
     expect(status).toBe(400);
     expect(data).toHaveProperty("error");
     expect(data).toHaveProperty("result");
+    expect(data.result).toBe(false);
   });
 };

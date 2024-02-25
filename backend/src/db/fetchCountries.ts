@@ -1,7 +1,8 @@
 import axios from "axios";
-import type { ICountry } from "../interfaces/Country";
+import type { INewCountry } from "../interfaces/Country";
+import { testCountry } from "./testCountry";
 
-interface ICountryData {
+interface INewCountryData {
   name: { common: string };
   flag: string;
   flags: { svg: string };
@@ -9,20 +10,23 @@ interface ICountryData {
   idd: { root: string; suffixes: string[] };
 }
 
-export const fetchCountries = async (): Promise<ICountry[]> => {
-  const response = await axios.get<ICountryData[]>(
+export const fetchCountries = async (): Promise<INewCountry[]> => {
+  const response = await axios.get<INewCountryData[]>(
     "https://restcountries.com/v3.1/all"
   );
-  return response.data.map((country) => getCountryData(country));
+  return [
+    ...response.data.map((country) => getCountryData(country)),
+    testCountry
+  ];
 };
 
-const getCountryData = (country: ICountryData): ICountry => {
+const getCountryData = (country: INewCountryData): INewCountry => {
   const { name, flag, flags, translations, idd } = country;
   const { root, suffixes } = idd;
   const { pol } = translations;
   const suffixesUndefined = suffixes === undefined || suffixes.length === 0;
   const rootUndefined = root === undefined;
-  const countryObject: ICountry = {
+  const countryObject: INewCountry = {
     name_eng: name.common,
     name_pol: pol.common,
     flag_emoji: flag,

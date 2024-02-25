@@ -45,7 +45,10 @@ class UserTable {
       where: { email: user.email }
     });
     if (exists !== null) return null;
-
+    const isCountryValid = await this.prisma.country.findUnique({
+      where: { id: user.countryId }
+    });
+    if (isCountryValid === null) return null;
     const newUser = await this.prisma.user.create({
       data: { ...validated, profile: { create: {} } }
     });

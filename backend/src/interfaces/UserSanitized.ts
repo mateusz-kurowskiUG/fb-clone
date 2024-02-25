@@ -1,9 +1,9 @@
 export interface IUserSanitized {
-  id: string;
-  email: string;
-  name: string;
-  lastName: string;
-  createdAt: Date;
   countryId: string;
+  createdAt: Date;
+  email: string;
+  id: string;
+  lastName: string;
+  name: string;
   phoneNumber: string;
 }

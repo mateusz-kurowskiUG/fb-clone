@@ -1,7 +1,7 @@
 import { type PrismaClient } from "@prisma/client";
 import { prisma } from "../prisma";
 import { fetchCountries } from "../fetchCountries";
-import type { ICountry } from "../../interfaces/Country";
+import type { INewCountry } from "../../interfaces/Country";
 
 class CountryTable {
   private readonly prisma: PrismaClient;
@@ -17,7 +17,7 @@ class CountryTable {
     return true;
   }
 
-  public async getCountries(): Promise<ICountry[] | null> {
+  public async getCountries(): Promise<INewCountry[] | null> {
     const countries = await this.prisma.country.findMany();
     if (countries === null || countries === undefined) {
       return null;

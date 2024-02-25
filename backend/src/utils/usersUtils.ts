@@ -4,13 +4,7 @@ import type { IUserSanitized } from "../interfaces/UserSanitized";
 import { validate as validateUUID } from "uuid";
 import axios, { type AxiosResponse } from "axios";
 import type { IRegisterResponse } from "../interfaces/ApiResponses.model";
-export const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
-export const passwordRegex =
-  /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-.]).{8,}$/;
-
-const phoneNumberRegex = /^\+\d{1,3}\s?[\d\s()-]{5,}$/;
-
-export const nameRegex = /^[\p{L} ,.'-]+$/u;
+import { validateDateOfBirth, validateEmail, validateName, validatePassword, validatePhoneNumber } from "./validation";
 
 export const sanitizeUsers = (users: TUser[]): IUserSanitized[] =>
   users.map((user: TUser) => {
@@ -84,21 +78,8 @@ export const validateUser = (user: INewUser): INewUser | false => {
   return fixedUser;
 };
 
-const fixPhoneNumber = (phoneNumber: string): string =>
+export const fixPhoneNumber = (phoneNumber: string): string =>
   phoneNumber.replaceAll(" ", "").trim();
-const validateEmail = (email: string): boolean => emailRegex.test(email);
-const validateName = (name: string): boolean =>
-  name.length > 1 && name.length < 50 && nameRegex.test(name);
-const validatePassword = (password: string): boolean =>
-  password.length > 7 && password.length < 50 && passwordRegex.test(password);
-const validateDateOfBirth = (dateOfBirth: Date): boolean => {
-  const now = new Date().getTime();
-  const thirteenYears = 13 * 365 * 24 * 60 * 60 * 1000;
-  const isOverThirteenYearsOld = now - dateOfBirth.getTime() >= thirteenYears;
-  return isOverThirteenYearsOld;
-};
-const validatePhoneNumber = (phoneNumber: string): boolean =>
-  phoneNumberRegex.test(phoneNumber);
 
 export const createUser = async (
   user: INewUser
