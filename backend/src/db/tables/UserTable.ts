@@ -1,6 +1,7 @@
 import type { PrismaClient } from "@prisma/client";
 import type { IUserSanitized } from "../../interfaces/UserSanitized";
 import {
+  checkUUID,
   sanitizeUser,
   sanitizeUsers,
   validateUser
@@ -41,14 +42,17 @@ class UserTable {
   public async createUser(user: INewUser): Promise<IUserSanitized | null> {
     const validated = validateUser(user);
     if (validated === false) return null;
-    const exists = await this.prisma.user.findUnique({
-      where: { email: user.email }
-    });
-    if (exists !== null) return null;
     const isCountryValid = await this.prisma.country.findUnique({
       where: { id: user.countryId }
     });
     if (isCountryValid === null) return null;
+    const emailExists = await this.prisma.user.findUnique({
+      where: { email: user.email }
+    });
+    const phoneExists = await this.prisma.user.findUnique({
+      where: { phoneNumber: user.phoneNumber }
+    });
+    if (emailExists !== null || phoneExists !== null) return null;
     const newUser = await this.prisma.user.create({
       data: { ...validated, profile: { create: {} } }
     });
@@ -60,15 +64,15 @@ class UserTable {
   }
 
   public async deleteUser(id: string): Promise<boolean> {
-    if (id === "" || id === undefined || id === null) {
+    if (id === "" || id === undefined || id === null || !checkUUID(id))
       return false;
-    }
+    const user = await this.prisma.user.findUnique({ where: { id } });
+    if (user === null) return false;
     const deleteUser = await this.prisma.user.delete({
       where: {
         id
       }
     });
-    console.log("user", deleteUser);
     return true;
   }
 }
