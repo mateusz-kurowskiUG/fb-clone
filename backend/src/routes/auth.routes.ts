@@ -1,11 +1,11 @@
 import { Router, type Response, type Request } from "express";
 import UserTable from "../db/tables/UserTable";
-import { validateUser } from "../utils/usersUtils";
 import {
   RegisterMessage,
   type IRegisterResponse
 } from "../interfaces/ApiResponses.model";
 import type json from "express";
+import { validateUser } from "../utils/validation";
 const db = UserTable;
 const authRouter = Router();
 

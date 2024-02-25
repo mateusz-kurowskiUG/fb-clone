@@ -1,4 +1,4 @@
-export interface UpdateUserBody {
+export interface IUpdateUserBody {
   email?: string;
   name?: string;
   lastName?: string;

@@ -26,11 +26,13 @@ export enum DeleteUserMessage {
 }
 
 export interface IUpdateUserResponse {
+  data?: IUserSanitized;
   success: boolean;
   message: string;
 }
 export enum UpdateUserMessage {
   SUCCESS = "User updated",
   ERROR = "User not found",
-  INVALID_REQUEST = "Invalid request"
+  INVALID_REQUEST = "Invalid request",
+  NOT_EXISTS = "User does not exist"
 }

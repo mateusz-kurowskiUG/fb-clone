@@ -1,11 +1,6 @@
 import type { PrismaClient } from "@prisma/client";
 import type { IUserSanitized } from "../../interfaces/UserSanitized";
-import {
-  checkUUID,
-  sanitizeUser,
-  sanitizeUsers,
-  validateUser
-} from "../../utils/usersUtils";
+import { checkUUID, sanitizeUser, sanitizeUsers } from "../../utils/usersUtils";
 import { prisma } from "../prisma";
 import type { INewUser } from "../../interfaces/NewUser.model";
 import type { UpdateUserBody } from "../../interfaces/UpdateUserBody";
@@ -17,6 +12,7 @@ import {
   type IRegisterResponse,
   type IUpdateUserResponse
 } from "../../interfaces/ApiResponses.model";
+import { validateUser } from "../../utils/validation";
 
 class UserTable {
   private readonly prisma: PrismaClient;
@@ -96,7 +92,19 @@ class UserTable {
     id: string,
     body: UpdateUserBody
   ): Promise<IUpdateUserResponse> {
-    return { message: UpdateUserMessage.SUCCESS, success: true };
+    const user = await this.prisma.user.findUnique({ where: { id } });
+    if (user === null)
+      return { message: UpdateUserMessage.NOT_EXISTS, success: false };
+    try {
+      const updated = await this.prisma.user.update({
+        where: { id },
+        data: body
+      });
+      const data = sanitizeUser(updated);
+      return { message: UpdateUserMessage.SUCCESS, success: true, data };
+    } catch (_) {
+      return { message: UpdateUserMessage.ERROR, success: false };
+    }
   }
 }
 export default new UserTable(prisma);

@@ -1,7 +1,9 @@
 import { Router, type Request, type Response } from "express";
 import UserTable from "../db/tables/UserTable";
 import { checkUUID } from "../utils/usersUtils";
-import * as _ from "lodash";
+import _ from "lodash";
+import { validateUserAsIs } from "../utils/validation";
+
 const usersRouter = Router();
 const db = UserTable;
 usersRouter.get("/", async (req: Request, res: Response) => {
@@ -37,7 +39,7 @@ usersRouter.delete("/:userId", async (req: Request, res: Response) => {
   return res.status(200).send(deleteRes);
 });
 
-usersRouter.patch("/:id", (req: Request, res: Response) => {
+usersRouter.patch("/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
   const { body } = req;
   if (!id || !body || !checkUUID(id))
@@ -51,6 +53,7 @@ usersRouter.patch("/:id", (req: Request, res: Response) => {
     phoneNumber,
     password
   } = body;
+
   const userParams = {
     email,
     name,
@@ -60,13 +63,18 @@ usersRouter.patch("/:id", (req: Request, res: Response) => {
     phoneNumber,
     password
   };
-  const filteredUserProps = _.filter(
+  const sanitizedParams = _.omitBy(
     userParams,
-    (value) => value !== undefined && value !== null && value !== ""
+    (value) => _.isNil(value) || value === ""
   );
-  console.log(filteredUserProps);
 
-  res.status(200).send({ message: "User updated", result: true });
+  const validated = validateUserAsIs(sanitizedParams);
+  if (_.isEqual(validated, {}))
+    return res.status(400).send({ message: "Invalid request", result: false });
+  const result = await db.updateUser(id, sanitizedParams);
+  if (!result.success) return res.status(400).send(result);
+
+  res.status(200).send(result);
 });
 
 export default usersRouter;
