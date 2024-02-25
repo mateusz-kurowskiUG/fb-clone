@@ -5,6 +5,7 @@ import {
   RegisterMessage,
   type IRegisterResponse
 } from "../interfaces/ApiResponses.model";
+import type json from "express";
 const db = UserTable;
 const authRouter = Router();
 
@@ -100,46 +101,52 @@ const authRouter = Router();
  *      400:
  *        description: Invalid user data
  */
-authRouter.post("/register", async (req: Request, res: Response) => {
-  if (req.body === undefined)
-    return res
-      .status(400)
-      .json({ message: RegisterMessage.ERROR_INVALID_DATA, success: false });
-  const {
-    email,
-    name,
-    password,
-    lastName,
-    dateOfBirth,
-    countryId,
-    phoneNumber
-  } = req.body;
-  if (typeof dateOfBirth !== "string")
-    return res
-      .status(400)
-      .json({ message: RegisterMessage.ERROR_INVALID_DATA, success: false });
-  const dateParsed = Date.parse(dateOfBirth);
+authRouter.post(
+  "/register",
+  async (
+    req: Request,
+    res: Response
+  ): Promise<json.Response<IRegisterResponse>> => {
+    if (req.body === undefined)
+      return res
+        .status(400)
+        .json({ message: RegisterMessage.ERROR_INVALID_DATA, success: false });
+    const {
+      email,
+      name,
+      password,
+      lastName,
+      dateOfBirth,
+      countryId,
+      phoneNumber
+    } = req.body;
+    if (typeof dateOfBirth !== "string")
+      return res
+        .status(400)
+        .json({ message: RegisterMessage.ERROR_INVALID_DATA, success: false });
+    const dateParsed = Date.parse(dateOfBirth);
 
-  const dateObject = new Date(dateParsed);
-  const validated = validateUser({
-    email,
-    name,
-    password,
-    lastName,
-    dateOfBirth: dateObject,
-    countryId,
-    phoneNumber
-  });
-  if (validated === false)
-    return res
-      .status(400)
-      .json({ message: RegisterMessage.ERROR_INVALID_DATA, success: false });
+    const dateObject = new Date(dateParsed);
+    const validated = validateUser({
+      email,
+      name,
+      password,
+      lastName,
+      dateOfBirth: dateObject,
+      countryId,
+      phoneNumber
+    });
+    if (validated === false)
+      return res
+        .status(400)
+        .json({ message: RegisterMessage.ERROR_INVALID_DATA, success: false });
 
-  const response = await db.createUser(validated);
-  if (!response.success) return res.status(400).json(response);
+    const response = await db.createUser(validated);
+    if (!response.success) return res.status(400).json(response);
 
-  return res.status(201).json(response);
-});
+    return res.status(201).json(response);
+  }
+);
 authRouter.post("/login", (req, res) => {});
 
 export default authRouter;

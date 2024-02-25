@@ -29,21 +29,18 @@ usersRouter.get("/:id", async (req: Request, res: Response) => {
 });
 usersRouter.delete("/:userId", async (req: Request, res: Response) => {
   const { userId } = req.params;
-  console.log(userId);
-
   if (!checkUUID(userId))
-    return res.status(400).send({ error: "Invalid user ID" });
-
+    return res.status(400).send({ message: "Invalid user ID", success: false });
   const deleteRes = await db.deleteUser(userId);
-  if (!deleteRes) return res.status(400).send({ error: "User does not exist" });
+  if (!deleteRes.success) return res.status(400).send(deleteRes);
 
-  return res.status(200).send({ success: "User deleted" });
+  return res.status(200).send(deleteRes);
 });
 
 usersRouter.patch("/:id", (req: Request, res: Response) => {
   const { id } = req.params;
   const { body } = req;
-  if (!checkUUID(id) || body === undefined)
+  if (!id || !body || !checkUUID(id))
     return res.status(400).send({ error: "Invalid request", result: false });
   const {
     email,
