@@ -1,0 +1,35 @@
+_id: req_d87a69bc0191461dbead29de4b3064bd
+type: Request
+parentId: wrk_90061d5225ad414daf94abc62d278602
+modified: 1708877831583
+created: 1708876801628
+url: localhost:3000/api/users/7dd4864b-f920-4082-b8c4-213310709a21
+name: Patch User
+description: ""
+method: PATCH
+body:
+  mimeType: application/json
+  text: |-
+    {	
+    		"countryId": "67da6710-6d8c-4f02-8212-864f395292b4",
+    		"dateOfBirth": "2011-02-02T00:00:00.000Z",
+    		"email": "mail@mail.com",
+    		"lastName": "kowalski",
+    		"name": "jan",
+    		"phoneNumber": "+48123456789"
+    }
+parameters: []
+headers:
+  - name: Content-Type
+    value: application/json
+  - name: User-Agent
+    value: insomnia/2023.5.8
+authentication: {}
+metaSortKey: -1708876801628
+isPrivate: false
+settingStoreCookies: true
+settingSendCookies: true
+settingDisableRenderRequestBody: false
+settingEncodeUrl: true
+settingRebuildPath: true
+settingFollowRedirects: global
