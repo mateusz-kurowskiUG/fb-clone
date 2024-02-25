@@ -3,12 +3,34 @@ import type { IUserSanitized } from "./UserSanitized";
 export interface IRegisterResponse {
   data?: IUserSanitized;
   message: RegisterMessage;
-  error?: string;
-  result: boolean;
+  success: boolean;
 }
 
 export enum RegisterMessage {
   SUCCESS = "User created successfully",
   ERROR_INVALID_DATA = "Invalid user data",
-  ERROR_SERVER = "Internal server error"
+  ERROR_SERVER = "Internal server error",
+  INVALID_COUNTRY = "Invalid country",
+  EXISTS = "User already exists"
+}
+
+export interface IDeleteUserResponse {
+  success: boolean;
+  message: string;
+}
+
+export enum DeleteUserMessage {
+  SUCCESS = "User deleted",
+  ERROR = "User does not exist",
+  NOT_AUTHORIZED = "Not authorized"
+}
+
+export interface IUpdateUserResponse {
+  success: boolean;
+  message: string;
+}
+export enum UpdateUserMessage {
+  SUCCESS = "User updated",
+  ERROR = "User not found",
+  INVALID_REQUEST = "Invalid request"
 }

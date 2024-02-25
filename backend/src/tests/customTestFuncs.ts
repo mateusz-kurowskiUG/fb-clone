@@ -7,12 +7,12 @@ export const validRegisterTest = (
 ): void => {
   test("New user should have been created", () => {
     console.log(response);
-  
+
     expect(status).toBe(201);
-    expect(response?.result).toBe(true);
+    expect(response?.success).toBe(true);
     expect(response).toHaveProperty("data");
     expect(response).toHaveProperty("message");
-    expect(response).toHaveProperty("result");
+    expect(response).toHaveProperty("success");
     expect(response?.data).toHaveProperty("id");
     expect(response?.data).toHaveProperty("name");
     expect(response?.data).toHaveProperty("email");
@@ -23,11 +23,14 @@ export const validRegisterTest = (
   });
 };
 
-export const invalidRegisterTest = (data: any, status: number): void => {
+export const invalidRegisterTest = (
+  data: IRegisterResponse,
+  status: number
+): void => {
   test("New user should not have been created", () => {
     expect(status).toBe(400);
-    expect(data).toHaveProperty("error");
-    expect(data).toHaveProperty("result");
-    expect(data.result).toBe(false);
+    expect(data).toHaveProperty("message");
+    expect(data).toHaveProperty("success");
+    expect(data.success).toBe(false);
   });
 };

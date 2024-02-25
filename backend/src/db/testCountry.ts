@@ -1,4 +1,4 @@
-import type { TCountry } from "../interfaces/ICountry";
+import type { TCountry } from "../interfaces/Country";
 
 export const testCountry: TCountry = {
   id: "ac3424f9-35fe-4f64-8bf2-b737ba31cb93",

@@ -102,7 +102,9 @@ const authRouter = Router();
  */
 authRouter.post("/register", async (req: Request, res: Response) => {
   if (req.body === undefined)
-    return res.status(400).json({ error: "Invalid user data", result: false });
+    return res
+      .status(400)
+      .json({ message: RegisterMessage.ERROR_INVALID_DATA, success: false });
   const {
     email,
     name,
@@ -113,7 +115,9 @@ authRouter.post("/register", async (req: Request, res: Response) => {
     phoneNumber
   } = req.body;
   if (typeof dateOfBirth !== "string")
-    return res.status(400).json({ error: "Invalid user data", result: false });
+    return res
+      .status(400)
+      .json({ message: RegisterMessage.ERROR_INVALID_DATA, success: false });
   const dateParsed = Date.parse(dateOfBirth);
 
   const dateObject = new Date(dateParsed);
@@ -127,18 +131,13 @@ authRouter.post("/register", async (req: Request, res: Response) => {
     phoneNumber
   });
   if (validated === false)
-    return res.status(400).json({ error: "Invalid user data", result: false });
-
-  const newUser = await db.createUser(validated);
-  if (newUser === null)
     return res
       .status(400)
-      .json({ error: "Something went wrong", result: false });
-  const response: IRegisterResponse = {
-    data: newUser,
-    message: RegisterMessage.SUCCESS,
-    result: true
-  };
+      .json({ message: RegisterMessage.ERROR_INVALID_DATA, success: false });
+
+  const response = await db.createUser(validated);
+  if (!response.success) return res.status(400).json(response);
+
   return res.status(201).json(response);
 });
 authRouter.post("/login", (req, res) => {});

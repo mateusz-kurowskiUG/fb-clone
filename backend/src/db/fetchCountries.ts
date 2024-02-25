@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { INewCountry } from "../interfaces/Country";
+import type { INewCountry } from "../interfaces/NewCountry";
 import { testCountry } from "./testCountry";
 
 interface INewCountryData {
