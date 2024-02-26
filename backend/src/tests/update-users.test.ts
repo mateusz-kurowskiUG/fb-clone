@@ -1,11 +1,9 @@
-import { expect, test, describe } from "bun:test";
+import { expect, test } from "bun:test";
 import { validateUserAsIs } from "../utils/validation";
 import updateUserBodies from "../data/userUpdateBodies";
-describe.each(updateUserBodies)(
-  "update-users",
+test.each(updateUserBodies)(
+  "Validate User Body: %p \n Should return %p",
   (updateBody, expectedResult) => {
-    test("validateUserAsIs", () => {
-      expect(validateUserAsIs(updateBody)).toEqual(expectedResult);
-    });
+    expect(validateUserAsIs(updateBody)).toEqual(expectedResult);
   }
 );

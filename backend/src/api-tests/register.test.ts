@@ -8,7 +8,7 @@ import {
 import { createUser, deleteUser } from "../utils/usersUtils";
 import { invalidUsers } from "../data/invalidUsers";
 
-describe.each(validUsers)("Valid User registration test", async (user) => {
+describe.each(validUsers)("Valid User: %p registration test", async (user) => {
   const response = await createUser(user);
   const { data, status } = response;
   if (data === undefined) throw new Error("User not created");

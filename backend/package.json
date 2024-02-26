@@ -8,7 +8,8 @@
     "start": "tsx watch src/index.ts",
     "lint": "eslint \"**/*.{ts,tsx}\"",
     "test_api": "bun test src/api-tests",
-    "test_unit": "bun test src/tests"
+    "test_unit": "bun test src/tests",
+    "test_watch": "bun test --watch"
   },
   "devDependencies": {
     "@jest/globals": "^29.7.0",
