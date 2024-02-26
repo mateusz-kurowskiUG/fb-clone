@@ -1,5 +1,5 @@
 import type { INewUser } from "../interfaces/NewUser.model";
-import type { UpdateUserBody } from "../interfaces/UpdateUserBody";
+import type { IUpdateUserBody } from "../interfaces/UpdateUserBody";
 import {
   emailRegex,
   nameRegex,
@@ -7,7 +7,7 @@ import {
   phoneNumberRegex
 } from "./regex";
 import { checkUUID, fixPhoneNumber } from "./usersUtils";
-
+import _ from "lodash";
 export const validateUser = (user: INewUser): INewUser | false => {
   const {
     email,
@@ -64,6 +64,22 @@ export const validateDateOfBirth = (dateOfBirth: Date): boolean => {
 export const validatePhoneNumber = (phoneNumber: string): boolean =>
   phoneNumberRegex.test(phoneNumber);
 
-export const validateUserAsIs = (user: UpdateUserBody): UpdateUserBody => {
-  
+// test this function \/
+export const validateUserAsIs = (user: IUpdateUserBody): IUpdateUserBody => {
+  const ommited = _.omitBy(user, (value) => _.isNil(value) || value === "");
+  const validated: IUpdateUserBody = {};
+  if (ommited.email && validateEmail(ommited.email))
+    validated.email = ommited.email;
+  if (ommited.name && validateName(ommited.name)) validated.name = ommited.name;
+  if (ommited.lastName && validateName(ommited.lastName))
+    validated.lastName = ommited.lastName;
+  if (ommited.dateOfBirth && validateDateOfBirth(ommited.dateOfBirth))
+    validated.dateOfBirth = ommited.dateOfBirth;
+  if (ommited.countryId && checkUUID(ommited.countryId))
+    validated.countryId = ommited.countryId;
+  if (ommited.phoneNumber && validatePhoneNumber(ommited.phoneNumber))
+    validated.phoneNumber = ommited.phoneNumber;
+  if (ommited.password && validatePassword(ommited.password))
+    validated.password = ommited.password;
+  return validated;
 };

@@ -42,6 +42,7 @@ class UserTable {
     return sanitizedUser;
   }
 
+  // ADD HASH!
   public async createUser(user: INewUser): Promise<IRegisterResponse> {
     const validated = validateUser(user);
     if (validated === false)
@@ -88,6 +89,8 @@ class UserTable {
     }
   }
 
+  // AUTHENTICATE THIS FUNCTION!
+  // ADD HASH!
   public async updateUser(
     id: string,
     body: UpdateUserBody
