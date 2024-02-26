@@ -1,12 +1,12 @@
-import { describe, afterEach } from "@jest/globals";
-import { validUsers } from "../../data/validUsers";
+import { describe, afterEach } from "bun:test";
+import { validUsers } from "../data/validUsers";
 
 import {
   invalidRegisterTest,
   validRegisterTest
-} from "../../tests/customTestFuncs";
-import { createUser, deleteUser } from "../../utils/usersUtils";
-import { invalidUsers } from "../../data/invalidUsers";
+} from "../tests/customTestFuncs";
+import { createUser, deleteUser } from "../utils/usersUtils";
+import { invalidUsers } from "../data/invalidUsers";
 
 describe.each(validUsers)("Valid User registration test", async (user) => {
   const response = await createUser(user);

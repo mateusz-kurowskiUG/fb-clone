@@ -1,5 +1,5 @@
 import type { IUpdateUserBody } from "../interfaces/UpdateUserBody";
-
+// TODO: SPLIT INTO VALID AND INVALID
 const updateUserBodies: IUpdateUserBody[][] = [
   [{ countryId: "string" }, {}],
   [{ countryId: "" }, {}],
