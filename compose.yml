@@ -10,7 +10,21 @@ services:
     ports:
       - "5432:5432" # Expose PostgreSQL port
   adminer:
+    depends_on:
+      - db
     image: adminer
     restart: always
     ports:
       - "8080:8080" # Expose Adminer port
+  # bun:
+  #   depends_on:
+  #     - db
+  #   build:
+  #     dockerfile: Dockerfile.yml
+  #     context: .
+  #   image: oven/bun:latest
+  #   ports:
+  #     - "3000:3000"
+  #   working_dir: /backend
+  #   # command: ["sh", "-c", "chmod u+x start.sh && ./start.sh"]
+  #   # command: ["sh", "-c", "sleep 100"]

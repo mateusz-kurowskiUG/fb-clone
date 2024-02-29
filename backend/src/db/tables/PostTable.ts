@@ -1,7 +1,7 @@
 import type { PrismaClient } from "@prisma/client";
 import { prisma } from "../prisma";
 
-class CommentTable {
+class PostTable {
   private readonly prisma: PrismaClient;
   constructor(prisma: PrismaClient) {
     this.prisma = prisma;
@@ -11,4 +11,4 @@ class CommentTable {
     console.log("hello");
   }
 }
-export default new CommentTable(prisma);
+export default new PostTable(prisma);
