@@ -7,6 +7,7 @@ I am currently dedicated to creating my own version of facebook-like app to impr
 ## Technologies and Tools
  - Typescript - Express.js API
  -  Postgres DB
+ -  Prisma.js ORM
  - (incoming) Next.js 
 ### Backend
 
