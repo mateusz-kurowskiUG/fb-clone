@@ -1,7 +1,7 @@
 # use the official Bun image
 # see all versions at https://hub.docker.com/r/oven/bun/tags
 FROM oven/bun:latest
-COPY backend/ /backend/
+COPY ../backend/ /backend/
 
 WORKDIR /backend/
 # run the app
